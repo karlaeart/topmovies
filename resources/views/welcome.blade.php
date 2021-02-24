@@ -29,20 +29,29 @@
     <body>
         <div class="container">
             <div class="my-5">
-                <h2 class="text-center mb-4">Top-rated IMDB Movies</h2>
-                <div class="btn-group text-left mb-4">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Filter by Year
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">2021</a>
-                        <a class="dropdown-item" href="#">2020</a>
-                        <a class="dropdown-item" href="#">2019</a>
-                        <a class="dropdown-item" href="#">2018</a>
+                <h2 class="text-center mb-4">20 Most Popular IMDB Movies</h2>
+                <h4 class="text-center mb-4 text-secondary">For Year {{ $year }}</h4>
+
+                <form action="{{ route('get.movies') }}" method="get">
+                    <div class="row text-left">
+                        <div class="col-md-2">
+                            <label for="year">Select Year:</label>
+                        </div>
                     </div>
-                </div>
-                <div class="row border-bottom bg-info text-white">
-                    <div class="col-md-2">
+                    <div class="row text-left">
+                        <div class="col-md-2">
+                            <div class="mb-4 form-group">
+                                <input class="form-control" name="year" id="year" type="number" min="{{ $year - 200 }}" max="{{ $year + 10 }}" step="1" value="{{ $year }}" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" class="btn btn-info" value="Search">
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row border-bottom bg-info text-white py-2">
+                    <div class="col-md-3">
                         Title
                     </div>
                     <div class="col-md-2">
@@ -57,30 +66,32 @@
                     <div class="col-md-2">
                         IMDB Link
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         Rating
                     </div>
                 </div>
-                <div class="row border-bottom">
-                    <div class="col-md-2">
-                        Dummy
+                @foreach($movies as $movie)
+                <div class="row border-bottom py-2">
+                    <div class="col-md-3">
+                        {{ $movie['title'] }}
                     </div>
                     <div class="col-md-2">
-                        Dummy
+                        <a href="{{ $movie['poster'] }}" target="_blank"><img src="{{ $movie['poster'] }}" alt="{{ $movie['title'] }}" width="50"></a>
                     </div>
                     <div class="col-md-2">
-                        Dummy
+                        {{ $movie['runtime'] }}
                     </div>
                     <div class="col-md-2">
-                        Dummy
+                        {{ $movie['year'] }}
                     </div>
                     <div class="col-md-2">
-                        Dummy
+                        <a class="text-primary" href="{{ 'https://www.imdb.com/title/' .$movie['id'] . '/' }}" target="_blank">Link</a>
                     </div>
-                    <div class="col-md-2">
-                        Dummy
+                    <div class="col-md-1">
+                        {{ $movie['imdb_rating'] }}
                     </div>
                 </div>
+                @endforeach
             </div>
         </div>
     </body>
